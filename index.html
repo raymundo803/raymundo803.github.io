@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>张群 · Raymundo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --text: #e8e4dd;
+    --text-muted: #a09c94;
+    --accent: #d4a853;
+    --accent-dim: #f0c96d;
+    --border: #2a2824;
+    --card-bg: #1a1a1a;
+    --tag-bg: #1e1c18;
+    --tag-text: #d4b96a;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.4);
+    --radius: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", Georgia, "Times New Roman", "Hiragino Mincho ProN", "YuMincho", serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Animated gradient background ── */
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%, 100% 50%, 50% 0%; }
+    25%  { background-position: 50% 0%, 50% 100%, 100% 50%; }
+    50%  { background-position: 100% 50%, 0% 50%, 50% 100%; }
+    75%  { background-position: 50% 100%, 50% 0%, 0% 50%; }
+    100% { background-position: 0% 50%, 100% 50%, 50% 0%; }
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(212,168,83,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 45% at 50% 50%, rgba(240,201,109,.05) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 40% at 50% 50%, rgba(184,134,11,.04) 0%, transparent 65%);
+    background-size: 200% 200%, 180% 180%, 220% 220%;
+    animation: gradientShift 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 680px;
+    padding: 0 24px;
+    margin: 0 auto;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 80px 0 48px;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4a853 0%, #b8860b 50%, #8b6914 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 36px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 20px rgba(184,134,11,.2);
+    user-select: none;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .hero .en-name {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero .tagline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid var(--border);
+    letter-spacing: 1px;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto;
+    padding: 8px 0;
+    width: 100%;
+    max-width: 200px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider span {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+  }
+
+  /* ── About ── */
+  .about {
+    padding: 40px 0;
+  }
+
+  .about .intro {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .about .intro p {
+    margin-bottom: 12px;
+  }
+
+  .about .intro .highlight {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .about-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .about-card h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .about-card .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .about-card .line {
+    font-size: 15px;
+    line-height: 1.8;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+    color: var(--text);
+    transition: border-color .3s;
+  }
+
+  .about-card .line:hover {
+    border-left-color: var(--accent-dim);
+  }
+
+  .about-card .line em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── Quote ── */
+  .quote-block {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .quote-block blockquote {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    line-height: 2;
+    border: none;
+    position: relative;
+  }
+
+  .quote-block blockquote::before {
+    content: '"';
+    font-size: 48px;
+    color: var(--accent-dim);
+    opacity: .4;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1;
+  }
+
+  /* ── Social ── */
+  .social {
+    text-align: center;
+    padding: 40px 0 80px;
+  }
+
+  .social h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: all .3s;
+    background: var(--card-bg);
+  }
+
+  .social-link:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    box-shadow: 0 2px 12px rgba(184,134,11,.1);
+    transform: translateY(-1px);
+  }
+
+  .social-link .icon {
+    font-size: 18px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    opacity: .6;
+  }
+
+  /* ── Fade-in animation ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp .8s ease-out both;
+  }
+  .fade-up:nth-child(1) { animation-delay: 0s; }
+  .fade-up:nth-child(2) { animation-delay: .1s; }
+  .fade-up:nth-child(3) { animation-delay: .2s; }
+  .fade-up:nth-child(4) { animation-delay: .3s; }
+  .fade-up:nth-child(5) { animation-delay: .4s; }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    main { padding: 0 16px; }
+    .hero { padding: 48px 0 32px; }
+    .about-card { padding: 24px 18px; }
+    .about-card .line { font-size: 14px; padding-left: 12px; }
+    .social-link { padding: 8px 16px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <!-- Hero -->
+  <section class="hero fade-up">
+    <div class="avatar">张</div>
+    <h1>张群</h1>
+    <div class="en-name">Raymundo</div>
+    <div class="tagline">
+      <span class="tag">💻 程序员</span>
+      <span class="tag">📖 文学爱好者</span>
+      <span class="tag">✍️ 18流诗人</span>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="divider fade-up"><span>✦</span></div>
+
+  <!-- About -->
+  <section class="about fade-up">
+    <div class="intro">
+      <p>少而好学，<span class="highlight">博而不专</span>。</p>
+      <p>沪漂十五载，蜗居小县城。</p>
+    </div>
+
+    <div class="about-card">
+      <h2>关于我</h2>
+      <div class="lines">
+        <div class="line">打工、创业、入坑；技术、销售、运营。</div>
+        <div class="line">五起五伏，<em>三死三生</em>。</div>
+        <div class="line">独立修行者，<em>阳明心学</em>爱好者。</div>
+        <div class="line">创造性问题求解的"专家"。</div>
+        <div class="line">诗人的心，侠客的梦，摄影师的光。</div>
+        <div class="line">前 <em>EPSON</em> 技术工程师。</div>
+        <div class="line"><em>腾讯微生活</em> 资深客户及运营经理。</div>
+        <div class="line">"同是浠水人"发起创始人。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <div class="quote-block fade-up">
+    <blockquote>一无所有，一无所成。</blockquote>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider fade-up"><span>✦</span></div>
+
+  <!-- Social -->
+  <section class="social fade-up">
+    <h2>找到我</h2>
+    <div class="social-links">
+      <a href="#" class="social-link">
+        <span class="icon">🐙</span> GitHub
+      </a>
+      <a href="#" class="social-link">
+        <span class="icon">🐦</span> Twitter
+      </a>
+      <a href="#" class="social-link">
+        <span class="icon">📧</span> Email
+      </a>
+      <a href="#" class="social-link">
+        <span class="icon">📝</span> Blog
+      </a>
+      <a href="#" class="social-link">
+        <span class="icon">💬</span> WeChat
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 张群 · Raymundo</p>
+  </footer>
+</main>
+
+</body>
+</html>
