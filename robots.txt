@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://www.hbfengchi.com.cn
+Sitemap: https://www.hbfengchi.com.cn/sitemap.xml
